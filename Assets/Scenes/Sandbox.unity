@@ -139,6 +139,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa7268f3fdc8926419f4cb8672253025, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  runSpeed: 10
+  jumpSpeed: 15
 --- !u!1 &749754472
 GameObject:
   m_ObjectHideFlags: 0
@@ -3331,6 +3333,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Constraints
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1098905995632908278, guid: 9aead94ced4009347a173e66e454f89e,
+        type: 3}
+      propertyPath: m_CollisionDetection
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5335810380036777905, guid: 9aead94ced4009347a173e66e454f89e,
         type: 3}
