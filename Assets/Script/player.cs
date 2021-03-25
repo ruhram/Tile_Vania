@@ -14,12 +14,14 @@ public class player : MonoBehaviour
     //cache
     Rigidbody2D myrigidbody;
     Animator myAnimator;
+    Collider2D myColllider;
 
     // Start is called before the first frame update
     void Start()
     {
         myrigidbody = GetComponent<Rigidbody2D>();
         myAnimator = GetComponent<Animator>();
+        myColllider = GetComponent<Collider2D>();
     }
 
     // Update is called once per frame
@@ -42,11 +44,12 @@ public class player : MonoBehaviour
     }
     private void Jump()
     {
-        if (Input.GetButtonDown("Jump"))
-        {
-            Vector2 jumpVelocity = new Vector2(0f, jumpSpeed);
-            myrigidbody.velocity += jumpVelocity;
-        }
+        if (!myColllider.IsTouchingLayers(LayerMask.GetMask("Ground"))) { return; }
+            if (Input.GetButtonDown("Jump"))
+            {
+                Vector2 jumpVelocity = new Vector2(0f, jumpSpeed);
+                myrigidbody.velocity += jumpVelocity;
+            }
     }
     private void flipSprite()
     {
