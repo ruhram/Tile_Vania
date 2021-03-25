@@ -7,6 +7,7 @@ public class player : MonoBehaviour
     //config
     [SerializeField] float runSpeed = 100f;
     [SerializeField] float jumpSpeed = 10f;
+    [SerializeField] float climbSpeed = 5f;
 
     //state
     bool isAlive = true;
@@ -30,6 +31,7 @@ public class player : MonoBehaviour
         Run();
         flipSprite();
         Jump();
+        climbLadder();
     }
 
     private void Run()
@@ -42,6 +44,18 @@ public class player : MonoBehaviour
         bool PlayerHasHorizontalSpeed = Mathf.Abs(myrigidbody.velocity.x) > Mathf.Epsilon;
         myAnimator.SetBool("isRunning", PlayerHasHorizontalSpeed);
     }
+    private void climbLadder()
+    {
+        if (!myColllider.IsTouchingLayers(LayerMask.GetMask("Climbing"))) { return; }
+        float controlThrow = Input.GetAxis("Vertical");
+        Vector2 climbVelocity = new Vector2(myrigidbody.velocity.x, controlThrow * climbSpeed);
+        myrigidbody.velocity = climbVelocity;
+
+        bool playerhasverticalspeed = Mathf.Abs(myrigidbody.velocity.y) > Mathf.Epsilon;
+        myAnimator.SetBool("isClimbing", playerhasverticalspeed);
+
+    }
+
     private void Jump()
     {
         if (!myColllider.IsTouchingLayers(LayerMask.GetMask("Ground"))) { return; }
