@@ -17,6 +17,7 @@ public class player : MonoBehaviour
     void Update()
     {
         Run();
+        flipSprite();
     }
 
     private void Run()
@@ -25,5 +26,14 @@ public class player : MonoBehaviour
         Debug.Log(controlThrow);
         Vector2 playerVelocity = new Vector2(controlThrow * runSpeed , myrigidbody.velocity.y);
         myrigidbody.velocity = playerVelocity;
+    }
+
+    private void flipSprite()
+    {
+        bool PlayerHasHorizontalSpeed = Mathf.Abs(myrigidbody.velocity.x) > Mathf.Epsilon;
+        if (PlayerHasHorizontalSpeed)
+        {
+            transform.localScale = new Vector2(Mathf.Sign(myrigidbody.velocity.x), 1f);
+        }
     }
 }
