@@ -11,7 +11,6 @@ public class EnemyMovement : MonoBehaviour
     void Start()
     {
             myRigidBody = GetComponent<Rigidbody2D>();
-
     }
 
     // Update is called once per frame

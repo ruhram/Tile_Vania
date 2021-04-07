@@ -8,6 +8,7 @@ public class player : MonoBehaviour
     [SerializeField] float runSpeed = 100f;
     [SerializeField] float jumpSpeed = 10f;
     [SerializeField] float climbSpeed = 5f;
+    [SerializeField] Vector2 deathKick = new Vector2(25f, 25f);
 
     //state
     bool isAlive = true;
@@ -32,10 +33,12 @@ public class player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!isAlive) { return; }
         Run();
         flipSprite();
         Jump();
         climbLadder();
+        die();
     }
 
     private void Run()
@@ -45,23 +48,27 @@ public class player : MonoBehaviour
         Vector2 playerVelocity = new Vector2(controlThrow * runSpeed , myrigidbody.velocity.y);
         myrigidbody.velocity = playerVelocity;
 
-        bool PlayerHasHorizontalSpeed = Mathf.Abs(myrigidbody.velocity.x) > Mathf.Epsilon;
+        bool PlayerHasHorizontalSpeed = Mathf.Abs(myrigidbody.velocity.x) >= Mathf.Epsilon;
         myAnimator.SetBool("isRunning", PlayerHasHorizontalSpeed);
     }
     private void climbLadder()
     {
-        if (!myFeet.IsTouchingLayers(LayerMask.GetMask("Climbing")))
+        if (!myFeet.IsTouchingLayers(LayerMask.GetMask("Ladder")))
         {
             myAnimator.SetBool("isClimbing", false);
-            myrigidbody.gravityScale = gravityScale;
+            myrigidbody.gravityScale = 1f;
         }
-        float controlThrow = Input.GetAxis("Vertical");
-        Vector2 climbVelocity = new Vector2(myrigidbody.velocity.x, controlThrow * climbSpeed);
-        myrigidbody.velocity = climbVelocity;
-        gravityScale = 0f;
+        else
+        {
+            float controlThrow = Input.GetAxis("Vertical");
+            Vector2 climbVelocity = new Vector2(myrigidbody.velocity.x, controlThrow * climbSpeed);
+            myrigidbody.velocity = climbVelocity;
+            myrigidbody.gravityScale = 0f;
 
-        bool playerhasverticalspeed = Mathf.Abs(myrigidbody.velocity.y) > Mathf.Epsilon;
-        myAnimator.SetBool("isClimbing", playerhasverticalspeed);
+            bool playerhasverticalspeed = Mathf.Abs(myrigidbody.velocity.y) >= Mathf.Epsilon;
+            myAnimator.SetBool("isClimbing", playerhasverticalspeed);
+            print(Mathf.Abs(myrigidbody.velocity.y));
+        }
 
     }
 
@@ -80,6 +87,15 @@ public class player : MonoBehaviour
         if (PlayerHasHorizontalSpeed)
         {
             transform.localScale = new Vector2(Mathf.Sign(myrigidbody.velocity.x), 1f);
+        }
+    }
+    private void die()
+    {
+        if (myBodyColllider.IsTouchingLayers(LayerMask.GetMask("Enemy")))
+        {
+            isAlive = false;
+            myAnimator.SetTrigger("isDying");
+            GetComponent<Rigidbody2D>().velocity = deathKick;
         }
     }
 }
