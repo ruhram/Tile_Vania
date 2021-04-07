@@ -8,7 +8,7 @@ public class player : MonoBehaviour
     [SerializeField] float runSpeed = 100f;
     [SerializeField] float jumpSpeed = 10f;
     [SerializeField] float climbSpeed = 5f;
-    [SerializeField] Vector2 deathKick = new Vector2(25f, 25f);
+    [SerializeField] Vector2 deathKick = new Vector2(-25f, 25f);
 
     //state
     bool isAlive = true;
