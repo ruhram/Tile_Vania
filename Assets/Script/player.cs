@@ -15,7 +15,8 @@ public class player : MonoBehaviour
     //cache
     Rigidbody2D myrigidbody;
     Animator myAnimator;
-    Collider2D myColllider;
+    CapsuleCollider2D myBodyColllider;
+    BoxCollider2D myFeet;
     float gravityScale;
 
     // Start is called before the first frame update
@@ -23,7 +24,8 @@ public class player : MonoBehaviour
     {
         myrigidbody = GetComponent<Rigidbody2D>();
         myAnimator = GetComponent<Animator>();
-        myColllider = GetComponent<Collider2D>();
+        myBodyColllider = GetComponent<CapsuleCollider2D>();
+        myFeet = GetComponent<BoxCollider2D>();
         gravityScale = myrigidbody.gravityScale;
     }
 
@@ -48,7 +50,7 @@ public class player : MonoBehaviour
     }
     private void climbLadder()
     {
-        if (!myColllider.IsTouchingLayers(LayerMask.GetMask("Climbing")))
+        if (!myFeet.IsTouchingLayers(LayerMask.GetMask("Climbing")))
         {
             myAnimator.SetBool("isClimbing", false);
             myrigidbody.gravityScale = gravityScale;
@@ -65,7 +67,7 @@ public class player : MonoBehaviour
 
     private void Jump()
     {
-        if (!myColllider.IsTouchingLayers(LayerMask.GetMask("Ground"))) { return; }
+        if (!myFeet.IsTouchingLayers(LayerMask.GetMask("Ground"))) { return; }
             if (Input.GetButtonDown("Jump"))
             {
                 Vector2 jumpVelocity = new Vector2(0f, jumpSpeed);
